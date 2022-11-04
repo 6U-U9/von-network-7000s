@@ -1,10 +1,10 @@
-version: '3'
+version: '3.7'
 services:
   #
   # Client
   #
-  client:
-    image: von-network-base
+  client2:
+    image: von-network-base2
     command: ./scripts/start_client.sh
     environment:
       - IP=${IP}
@@ -14,14 +14,14 @@ services:
     networks:
       - von
     volumes:
-      - client-data:/home/indy/.indy_client
+      - client-data2:/home/indy/.indy_client
       - ./tmp:/tmp
 
   #
   # Webserver
   #
-  webserver:
-    image: von-network-base
+  webserver2:
+    image: von-network-base2
     command: bash -c 'sleep 10 && ./scripts/start_webserver.sh'
     environment:
       - IP=${IP}
@@ -43,18 +43,18 @@ services:
     networks:
       - von
     ports:
-      - ${WEB_SERVER_HOST_PORT:-9000}:8000
+      - ${WEB_SERVER_HOST_PORT:-7000}:8000
     volumes:
       - ./config:/home/indy/config
       - ./server:/home/indy/server
-      - webserver-cli:/home/indy/.indy-cli
-      - webserver-ledger:/home/indy/ledger
+      - webserver-cli2:/home/indy/.indy-cli
+      - webserver-ledger2:/home/indy/ledger
 
   #
   # Synchronization test
   #
-  synctest:
-    image: von-network-base
+  synctest2:
+    image: von-network-base2
     command: ./scripts/start_synctest.sh
     environment:
       - IP=${IP}
@@ -65,30 +65,30 @@ services:
     networks:
       - von
     ports:
-      - ${WEB_SERVER_HOST_PORT:-9000}:8000
+      - ${WEB_SERVER_HOST_PORT:-7000}:8000
     volumes:
       - ./config:/home/indy/config
       - ./server:/home/indy/server
-      - webserver-cli:/home/indy/.indy-cli
-      - webserver-ledger:/home/indy/ledger
+      - webserver-cli2:/home/indy/.indy-cli
+      - webserver-ledger2:/home/indy/ledger
 
   #
   # Nodes
   #
-  nodes:
-    image: von-network-base
+  nodes2:
+    image: von-network-base2
     command: ./scripts/start_nodes.sh
     networks:
       - von
     ports:
-      - 9701:9701
-      - 9702:9702
-      - 9703:9703
-      - 9704:9704
-      - 9705:9705
-      - 9706:9706
-      - 9707:9707
-      - 9708:9708
+      - 7701:7701
+      - 7702:7702
+      - 7703:7703
+      - 7704:7704
+      - 7705:7705
+      - 7706:7706
+      - 7707:7707
+      - 7708:7708
     environment:
       - IP=${IP}
       - IPS=${IPS}
@@ -96,16 +96,16 @@ services:
       - LOG_LEVEL=${LOG_LEVEL}
       - RUST_LOG=${RUST_LOG}
     volumes:
-      - nodes-data:/home/indy/ledger
+      - nodes-data2:/home/indy/ledger
 
-  node1:
-    image: von-network-base
+  node12:
+    image: von-network-base2
     command: ./scripts/start_node.sh 1
     networks:
       - von
     ports:
-      - 9701:9701
-      - 9702:9702
+      - 7701:7701
+      - 7702:7702
     environment:
       - IP=${IP}
       - IPS=${IPS}
@@ -113,16 +113,16 @@ services:
       - LOG_LEVEL=${LOG_LEVEL}
       - RUST_LOG=${RUST_LOG}
     volumes:
-      - node1-data:/home/indy/ledger
+      - node1-data2:/home/indy/ledger
 
-  node2:
-    image: von-network-base
+  node22:
+    image: von-network-base2
     command: ./scripts/start_node.sh 2
     networks:
       - von
     ports:
-      - 9703:9703
-      - 9704:9704
+      - 7703:7703
+      - 7704:7704
     environment:
       - IP=${IP}
       - IPS=${IPS}
@@ -130,16 +130,16 @@ services:
       - LOG_LEVEL=${LOG_LEVEL}
       - RUST_LOG=${RUST_LOG}
     volumes:
-      - node2-data:/home/indy/ledger
+      - node2-data2:/home/indy/ledger
 
-  node3:
-    image: von-network-base
+  node32:
+    image: von-network-base2
     command: ./scripts/start_node.sh 3
     networks:
       - von
     ports:
-      - 9705:9705
-      - 9706:9706
+      - 7705:7705
+      - 7706:7706
     environment:
       - IP=${IP}
       - IPS=${IPS}
@@ -147,16 +147,16 @@ services:
       - LOG_LEVEL=${LOG_LEVEL}
       - RUST_LOG=${RUST_LOG}
     volumes:
-      - node3-data:/home/indy/ledger
+      - node3-data2:/home/indy/ledger
 
-  node4:
-    image: von-network-base
+  node42:
+    image: von-network-base2
     command: ./scripts/start_node.sh 4
     networks:
       - von
     ports:
-      - 9707:9707
-      - 9708:9708
+      - 7707:7707
+      - 7708:7708
     environment:
       - IP=${IP}
       - IPS=${IPS}
@@ -164,17 +164,26 @@ services:
       - LOG_LEVEL=${LOG_LEVEL}
       - RUST_LOG=${RUST_LOG}
     volumes:
-      - node4-data:/home/indy/ledger
+      - node4-data2:/home/indy/ledger
 
 networks:
   von:
+    name: von2
 
 volumes:
-  client-data:
-  webserver-cli:
-  webserver-ledger:
-  node1-data:
-  node2-data:
-  node3-data:
-  node4-data:
-  nodes-data:
+  client-data2:
+    name: client-data2
+  webserver-cli2:
+    name: webserver-cli2
+  webserver-ledger2:
+    name: webserver-ledger2
+  node1-data2:
+    name: node1-data2
+  node2-data2:
+    name: node2-data2
+  node3-data2:
+    name: node3-data2
+  node4-data2:
+    name: node4-data2
+  nodes-data2:
+    name: nodes-data2

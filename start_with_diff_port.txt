@@ -1,0 +1,5 @@
+modify
+1. Dockerfile to replace generate_indy_pool_transactions with new start port
+2. script/start_node.sh with new start port
+3. manage script with new start port and new image name
+4. docker-compose.yml with new start port, image name, network name, and volume name

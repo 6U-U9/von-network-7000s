@@ -1,8 +1,10 @@
 #!/bin/bash
 export MSYS_NO_PATHCONV=1
 # getDockerHost; for details refer to https://github.com/bcgov/DITP-DevOps/tree/main/code/snippets#getdockerhost
-. /dev/stdin <<<"$(cat <(curl -s --raw https://raw.githubusercontent.com/bcgov/DITP-DevOps/main/code/snippets/getDockerHost))" 
-export DOCKERHOST=$(getDockerHost)
+
+dockerHostAddress=$(docker run --rm --net=host eclipse/che-ip)
+echo ${DOCKERHOST:-${APPLICATION_URL:-${dockerHostAddress}}}
+export DOCKERHOST=${DOCKERHOST:-${APPLICATION_URL:-${dockerHostAddress}}}
 
 SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 export COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-von}"
@@ -450,7 +452,7 @@ function wait_for_ledger() {
       # Wait for ledger server to start ...
       local startTime=${SECONDS}
       # use global LEDGER_URL
-      local LEDGER_URL="${LEDGER_URL_CONFIG:-http://localhost:9000}"
+      local LEDGER_URL="${LEDGER_URL_CONFIG:-http://localhost:7000}"
       printf "waiting for ledger to start"
       while ! pingLedger "$LEDGER_URL"; do
         printf "."
@@ -836,7 +838,7 @@ case "${COMMAND}" in
       install_taa
       ${dockerCompose} \
         up \
-        -d webserver node1 node2 node3 node4
+        -d webserver2 node12 node22 node32 node42
       wait_for_ledger
       logs
       echo 'Want to see the scrolling container logs? Run "./manage logs"'
@@ -890,10 +892,10 @@ case "${COMMAND}" in
       remove_taa
     ;;
   build)
-      docker build $(initDockerBuildArgs) -t von-network-base .
+      docker build $(initDockerBuildArgs) -t von-network-base2 .
     ;;
   rebuild)
-      docker build --no-cache --progress plain $(initDockerBuildArgs) -t von-network-base .
+      docker build --no-cache --progress plain $(initDockerBuildArgs) -t von-network-base2 .
     ;;
   dockerhost)
       echo -e \\n"DockerHost: ${DOCKERHOST}"\\n

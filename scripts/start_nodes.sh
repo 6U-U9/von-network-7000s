@@ -3,7 +3,7 @@
 set -e
 
 HOST="${HOST:-0.0.0.0}"
-START_PORT="9700"
+START_PORT="7700"
 NODE_NUM="1 2 3 4"
 
 if [ ! -d "/home/indy/ledger/sandbox/keys" ]; then
