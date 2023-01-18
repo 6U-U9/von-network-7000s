@@ -1,5 +1,5 @@
 modify
-1. Dockerfile to replace generate_indy_pool_transactions with new start port
-2. script/start_node.sh with new start port
-3. manage script with new start port and new image name
-4. docker-compose.yml with new start port, image name, network name, and volume name
+1. Dockerfile to replace generate_indy_pool_transactions with new start port (覆盖的文件 修改的内容是：9700 -> 7700)
+2. script/start_node.sh with new start port (9700 -> 7700)
+3. manage script with new start port (9000 -> 7000) and new image name(line 894 build rebuild part, add some suffix to differ from origin)
+4. docker-compose.yml with new start port, image name, network name, and volume name (add some suffix to differ from origin)
